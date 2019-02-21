@@ -5,54 +5,23 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <script src="/js/jquery.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/socketio/socket.io.js"></script>
+  <script src="/public/socket_io.js"></script>
   <link rel="stylesheet" href="/public/style.css">
 </head>
 
 <body class="container">
   <div class="main-area">
     <div class="chat-area-wrapper">
-      <div class="username" id="username">User39463</div>
+      <div class="username" id="username"></div>
       <div class="card chat-area">
         <ol id="messages_list">
-          <li>
-            <div class="message-time" id="message_time">9:05am</div>
-            <div class="message-content" id="message_content">hello</div>
-          </li>
-          <li>
-            <div class="message-time">9:05am</div>
-            <div class="message-content">how</div>
-          </li>
-          <li>
-            <div class="message-time">9:05am</div>
-            <div class="message-content">are</div>
-          </li>
-          <li>
-            <div class="message-time">9:05am</div>
-            <div class="message-content">are</div>
-          </li>
-          <li>
-            <div class="message-time">9:05am</div>
-            <div class="message-content">are</div>
-          </li>
-          <li>
-            <div class="message-time">9:05am</div>
-            <div class="message-content">are</div>
-          </li>
-          <li>
-            <div class="message-time">9:05am</div>
-            <div class="message-content">are</div>
-          </li>
-
-          <li>
-            <div class="message-time">9:05am</div>
-            <div class="message-content">are</div>
-          </li>
         </ol>
 
         <div class="input-group mb-3">
-          <input type="text" class="form-control message-input" placeholder="type message ..." aria-label="Recipient's username" aria-describedby="button-addon2">
+          <input type="text" class="form-control message-input" id="message" placeholder="type message ...">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary send-btn" type="button" id="button-addon2">Button</button>
+            <button class="btn btn-outline-secondary send-btn" type="button" onclick="sendMessage()" id="send_message_btn">Send</button>
           </div>
         </div>
       </div>
@@ -60,20 +29,10 @@
     <div class="currently-online-wrapper">
       <div class="currently-online-title">Currently Online</div>
       <div class="card currently-online">
-        <ol>
-          <li>User123124444</li>
-          <li>User4874873847</li>
-          <li>User61839474</li>
-          <li>User123124444</li>
-          <li>User4874873847</li>
-          <li>User61839474</li>
-          <li>User123124444</li>
-          <li>User4874873847</li>
-          <li>User61839474</li>
+        <ol id="user_list">
         </ol>
       </div>
     </div>
   </div>
 </body>
-
 </html>

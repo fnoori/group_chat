@@ -27,15 +27,22 @@
 }
 .chat-area li {
 }
+.chat-area div {
+  font-size: 0.9rem;
+}
 .chat-area li:nth-child(odd) {
   background: #eee;
 }
 .message-time {
   padding: .6rem;
-  border-right: 1px solid rgba(0,0,0,0.1);
   display: inline-flex;
 }
 .message-content {
+  padding: .6rem;
+  display: inline-flex;
+  word-break: break-all;
+}
+.username-message {
   padding: .6rem;
   display: inline-flex;
 }
