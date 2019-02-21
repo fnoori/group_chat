@@ -1,0 +1,41 @@
+/* bootstrap override */
+.container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.main-area {
+  display: flex;
+}
+.chat-area {
+  width: 80%;
+  height: 20rem;
+  border-bottom: 0 !important;
+}
+.chat-area .input-group {
+  margin-top: auto;
+  margin-bottom: 0 !important;
+}
+.message-input {
+  border-top-left-radius: 0;
+  border-color: rgba(0,0,0,.125);
+  border-left: 0;
+}
+.send-btn {
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-color: rgba(0,0,0,.125);
+}
+.currently-online {
+  width: 20%;
+  height: 20rem;
+  margin-left: 1rem;
+}
+
+
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+    max-width: none;
+  }
+}

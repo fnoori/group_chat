@@ -1,0 +1,26 @@
+{
+  "name": "group_chat",
+  "version": "1.0.0",
+  "description": "group chat for seng 513 at university of calgary",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fnoori/group_chat.git"
+  },
+  "author": "farzam noori",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fnoori/group_chat/issues"
+  },
+  "homepage": "https://github.com/fnoori/group_chat#readme",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "express": "^4.16.4",
+    "jquery": "^3.3.1",
+    "nodemon": "^1.18.10"
+  }
+}
