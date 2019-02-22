@@ -23,10 +23,17 @@ io.on('connection', function(socket){
     io.emit('chat message', msg);
   });
 
-  socket.on('update chat', function() {
-    console.log('inside udpate chat');
-    console.log(messages);
-    io.emit('update chat', messages);
+  socket.on('update chat', function(newUser) {
+    if (newUser.length > 0) {
+      messages.push({
+        'username': ' ',
+        'message': `<b>${newUser} just joined</b>`,
+        'time': new Date().toLocaleTimeString()
+      });
+      io.emit('update chat', messages);
+    } else {
+      io.emit('update chat', messages);
+    }
   });
 
   socket.on('update user', function(user) {
@@ -34,9 +41,34 @@ io.on('connection', function(socket){
     io.emit('update user', users);
   });
 
+  socket.on('update username', function(userInfo) {
+    let oldUsername = userInfo[0];
+    let newUsername = userInfo[1];
+    let indexOfOldUsername = 0;
+
+    users.forEach((user) => {
+      if (user === newUsername) {
+        io.emit('update username', false);
+      }
+    });
+
+    // update username
+    indexOfOldUsername = users.indexOf(oldUsername);
+    users[indexOfOldUsername] = newUsername;
+
+    // update messages
+    messages.forEach((message) => {
+      if (message.username === oldUsername) {
+        message.username = newUsername;
+      }
+    });
+
+    io.emit('update chat', messages);
+    io.emit('update user', users);
+  });
+
   socket.on('remove user', function(user) {
     users.splice(user, 1);
-    console.log(users);
     io.emit('update user', users);
   });
 });

@@ -2,6 +2,12 @@ let socket = io();
 let messages = [];
 let users = [];
 
+$(document).on('keypress',function(e) {
+  if(e.which == 13) {
+      sendMessage();
+  }
+});
+
 socket.on('connect', function(){
   let ranNum = Math.floor((Math.random() * 10) + 1);
   let usernameIs;
@@ -12,7 +18,7 @@ socket.on('connect', function(){
   $('#username').text(usernameIs);
 
   socket.emit('update user', usernameIs);
-  socket.emit('update chat');
+  socket.emit('update chat', usernameIs);
 });
 
 socket.on('update chat', function(messages) {
@@ -47,19 +53,31 @@ socket.on('chat message', function(msg) {
               <div class="username-message">${msg.username}</div>
               <div class="message-content">${msg.message}</div>
             </li>`));
+  $("#messages_list").scrollTop($("#messages_list")[0].scrollHeight);
 });
 
 function sendMessage() {
   let message = $('#message').val();
   let username = $('#username').text();
-  let messageToSend = {
-    'username': username,
-    'message': message,
-    'time': new Date().toLocaleTimeString()
-  };
 
-  socket.emit('chat message', messageToSend);
-  $('#message').val('');
+  if (message.split(' ')[0] === '/nick') {
+    let oldUsername = username;
+    let newUsername = message.split(' ')[1];
+
+    socket.emit('update username', [oldUsername, newUsername]);
+
+    $('#message').val('');
+
+  } else {
+    let messageToSend = {
+      'username': username,
+      'message': message,
+      'time': new Date().toLocaleTimeString()
+    };
+
+    socket.emit('chat message', messageToSend);
+    $('#message').val('');
+  }
 
   return false;
 }
