@@ -5,6 +5,7 @@ let io = require('socket.io')(http);
 let path = __dirname + '/views/';
 
 let users = [];
+let messages = [];
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
@@ -18,21 +19,25 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
+    messages.push(msg);
     io.emit('chat message', msg);
   });
+
+  socket.on('update chat', function() {
+    console.log('inside udpate chat');
+    console.log(messages);
+    io.emit('update chat', messages);
+  });
+
   socket.on('update user', function(user) {
     users.push(user);
-    console.log(users);
     io.emit('update user', users);
   });
+
   socket.on('remove user', function(user) {
     users.splice(user, 1);
     console.log(users);
     io.emit('update user', users);
-  });
-
-  socket.on('disconnect', function(value) {
-    console.log(value);
   });
 });
 

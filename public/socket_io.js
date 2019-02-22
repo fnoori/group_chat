@@ -12,16 +12,28 @@ socket.on('connect', function(){
   $('#username').text(usernameIs);
 
   socket.emit('update user', usernameIs);
+  socket.emit('update chat');
+});
+
+socket.on('update chat', function(messages) {
+  $('#messages_list').empty();
+  messages.forEach((message) => {
+    $('#messages_list')
+    .append($(`<li>
+                  <div class="message-time">${message.time}</div>
+                  <div class="username-message">${message.username}</div>
+                  <div class="message-content">${message.message}</div>
+                </li>`));
+  });
 });
 
 socket.on('disconnect', function() {
   let userToRemove = $('#username').text();
 
-  socket.emit('disconnect', userToRemove);
+  socket.emit('remove user', userToRemove);
 });
 
 socket.on('update user', function(users) {
-  //$('#user_list').append($(`<li>${users}</li>`));
   $('#user_list').empty();
   users.forEach((user) => {
     $('#user_list').append($(`<li>${user}</li>`));
