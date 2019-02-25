@@ -22,24 +22,6 @@ socket.on('connect', function(){
 });
 
 socket.on('update chat', function(messages) {
-/*
-if (msg.username.username === $('#username').text()) {
-  $('#messages_list')
-  .append($(`<li>
-              <div class="message-time">${msg.time}</div>
-              <div class="username-message" style="color: #${msg.username.color} !important;"><b>${msg.username.username}</b></div>
-              <div class="message-content">${msg.message}</div>
-            </li>`));
-} else {
-  $('#messages_list')
-  .append($(`<li>
-              <div class="message-time">${msg.time}</div>
-              <div class="username-message">${msg.username.username}</div>
-              <div class="message-content">${msg.message}</div>
-            </li>`));
-}
-*/
-
   $('#messages_list').empty();
   messages.forEach((message) => {
     if ($('#username').text() === message.username.username) {
@@ -47,6 +29,13 @@ if (msg.username.username === $('#username').text()) {
       .append($(`<li>
                     <div class="message-time">${message.time}</div>
                     <div class="username-message" style="color: #${message.username.color} !important;"><b>${message.username.username}</b></div>
+                    <div class="message-content">${message.message}</div>
+                  </li>`));
+    } else if (message.username === ' ') {
+      $('#messages_list')
+      .append($(`<li>
+                    <div class="message-time">${message.time}</div>
+                    <div class="username-message"></div>
                     <div class="message-content">${message.message}</div>
                   </li>`));
     } else {
@@ -106,6 +95,7 @@ function sendMessage() {
     let newColor = message.split(' ')[1];
 
     socket.emit('update username color', [username, newColor]);
+    $('#message').val('');
 
   } else {
     let messageToSend = {
