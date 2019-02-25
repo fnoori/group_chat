@@ -58,6 +58,7 @@ socket.on('update user', function(users) {
 });
 
 socket.on('chat message', function(msg) {
+  console.log(msg);
 
   if (msg.username.username === $('#username').text()) {
     $('#messages_list')

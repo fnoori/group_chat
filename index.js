@@ -19,19 +19,28 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
+    let incomingMsg = {};
 
     users.forEach((user) => {
-      if (user.username === msg.username) {
-        msg.username = {
+      console.log(`user.username: ${user.username}`);
+      console.log(`msg.username.username: ${msg.username.username}`);
+
+      console.log(`user.username: ${user.username}`);
+      console.log(`msg.username: ${msg.username}`);
+
+      if ((user.username === msg.username) || (user.username === msg.username.username)) {
+        incomingMsg.username = {
           'username': msg.username,
           'color': user.color
         };
       }
     });
+    incomingMsg.message = msg.message;
 
-    messages.push(msg);
+    console.log(incomingMsg);
+    messages.push(incomingMsg);
 
-    io.emit('chat message', msg);
+    io.emit('chat message', incomingMsg);
   });
 
   socket.on('update chat', function(newUser) {
@@ -70,13 +79,16 @@ io.on('connection', function(socket){
     });
 
     // update username
-    indexOfOldUsername = users.indexOf(oldUsername);
-    users[indexOfOldUsername] = newUsername;
+    users.forEach((user) => {
+      if (user.username === oldUsername) {
+        user.username.username = newUsername;
+      }
+    });
 
     // update messages
     messages.forEach((message) => {
-      if (message.username === oldUsername) {
-        message.username = newUsername;
+      if (message.username.username === oldUsername) {
+        message.username.username = newUsername;
       }
     });
 
