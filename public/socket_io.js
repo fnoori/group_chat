@@ -48,6 +48,8 @@ socket.on('update chat', function(messages) {
     }
 
   });
+
+  $("#messages_list").scrollTop($("#messages_list")[0].scrollHeight);
 });
 
 socket.on('update user', function(users) {
@@ -58,8 +60,6 @@ socket.on('update user', function(users) {
 });
 
 socket.on('chat message', function(msg) {
-  console.log(msg);
-
   if (msg.username.username === $('#username').text()) {
     $('#messages_list')
     .append($(`<li>

@@ -22,12 +22,6 @@ io.on('connection', function(socket){
     let incomingMsg = {};
 
     users.forEach((user) => {
-      console.log(`user.username: ${user.username}`);
-      console.log(`msg.username.username: ${msg.username.username}`);
-
-      console.log(`user.username: ${user.username}`);
-      console.log(`msg.username: ${msg.username}`);
-
       if ((user.username === msg.username) || (user.username === msg.username.username)) {
         incomingMsg.username = {
           'username': msg.username,
@@ -38,7 +32,6 @@ io.on('connection', function(socket){
     incomingMsg.message = msg.message;
     incomingMsg.time = new Date().toLocaleTimeString();
 
-    console.log(incomingMsg);
     messages.push(incomingMsg);
 
     io.emit('chat message', incomingMsg);
@@ -71,8 +64,7 @@ io.on('connection', function(socket){
     let oldUsername = userInfo[0];
     let newUsername = userInfo[1];
     let indexOfOldUsername = 0;
-    console.log(users);
-    console.log(messages);
+
     users.forEach((user) => {
       if (user === newUsername) {
         io.emit('update user', false);
@@ -93,10 +85,6 @@ io.on('connection', function(socket){
         message.username.username = newUsername;
       }
     });
-    console.log('user after');
-    console.log(users);
-    console.log('messages after');
-    console.log(messages);
 
     io.emit('update chat', messages);
     io.emit('update user', users);
@@ -122,6 +110,14 @@ io.on('connection', function(socket){
 
   socket.on('user disconnect', function(user) {
     users.splice(user, 1);
+
+    messages.push({
+      'username': ' ',
+      'message': `<b>${user} left the chat</b>`,
+      'time': new Date().toLocaleTimeString()
+    });
+
+    io.emit('update chat', messages);
     io.emit('update user', users);
   });
 });
