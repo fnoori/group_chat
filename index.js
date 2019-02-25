@@ -36,6 +36,7 @@ io.on('connection', function(socket){
       }
     });
     incomingMsg.message = msg.message;
+    incomingMsg.time = new Date().toLocaleTimeString();
 
     console.log(incomingMsg);
     messages.push(incomingMsg);
@@ -70,7 +71,8 @@ io.on('connection', function(socket){
     let oldUsername = userInfo[0];
     let newUsername = userInfo[1];
     let indexOfOldUsername = 0;
-
+    console.log(users);
+    console.log(messages);
     users.forEach((user) => {
       if (user === newUsername) {
         io.emit('update user', false);
@@ -81,7 +83,7 @@ io.on('connection', function(socket){
     // update username
     users.forEach((user) => {
       if (user.username === oldUsername) {
-        user.username.username = newUsername;
+        user.username = newUsername;
       }
     });
 
@@ -91,6 +93,10 @@ io.on('connection', function(socket){
         message.username.username = newUsername;
       }
     });
+    console.log('user after');
+    console.log(users);
+    console.log('messages after');
+    console.log(messages);
 
     io.emit('update chat', messages);
     io.emit('update user', users);
