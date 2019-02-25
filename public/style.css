@@ -12,6 +12,7 @@
 }
 .username {
   font-weight: bold;
+  margin-right: auto;
 }
 .chat-area-wrapper {
   width: 80%;
@@ -19,7 +20,7 @@
 .chat-area {
   height: 20rem;
   border-bottom: 0 !important;
-  margin-top: 1rem;
+  margin-top: 0.2rem;
 }
 .chat-area ol {
   list-style-type: none; margin: 0; padding: 0;

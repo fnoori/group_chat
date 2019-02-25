@@ -13,7 +13,10 @@
 <body class="container">
   <div class="main-area">
     <div class="chat-area-wrapper">
-      <div class="username" id="username"></div>
+      <div class="d-flex">
+        <div class="username" id="username"></div>
+        <button type="button" class="btn btn-danger ml-auto" onclick="disconnect()" id="disconnect">Disconnect</button>
+      </div>
       <div class="card chat-area">
         <ol id="messages_list">
         </ol>

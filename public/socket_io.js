@@ -22,37 +22,70 @@ socket.on('connect', function(){
 });
 
 socket.on('update chat', function(messages) {
+/*
+if (msg.username.username === $('#username').text()) {
+  $('#messages_list')
+  .append($(`<li>
+              <div class="message-time">${msg.time}</div>
+              <div class="username-message" style="color: #${msg.username.color} !important;"><b>${msg.username.username}</b></div>
+              <div class="message-content">${msg.message}</div>
+            </li>`));
+} else {
+  $('#messages_list')
+  .append($(`<li>
+              <div class="message-time">${msg.time}</div>
+              <div class="username-message">${msg.username.username}</div>
+              <div class="message-content">${msg.message}</div>
+            </li>`));
+}
+*/
+
   $('#messages_list').empty();
   messages.forEach((message) => {
-    $('#messages_list')
-    .append($(`<li>
-                  <div class="message-time">${message.time}</div>
-                  <div class="username-message">${message.username}</div>
-                  <div class="message-content">${message.message}</div>
-                </li>`));
+    if ($('#username').text() === message.username.username) {
+      $('#messages_list')
+      .append($(`<li>
+                    <div class="message-time">${message.time}</div>
+                    <div class="username-message" style="color: #${message.username.color} !important;"><b>${message.username.username}</b></div>
+                    <div class="message-content">${message.message}</div>
+                  </li>`));
+    } else {
+      $('#messages_list')
+      .append($(`<li>
+                    <div class="message-time">${message.time}</div>
+                    <div class="username-message" style="color: #${message.username.color} !important;">${message.username.username}</div>
+                    <div class="message-content">${message.message}</div>
+                  </li>`));
+    }
+
   });
-});
-
-socket.on('disconnect', function() {
-  let userToRemove = $('#username').text();
-
-  socket.emit('remove user', userToRemove);
 });
 
 socket.on('update user', function(users) {
   $('#user_list').empty();
   users.forEach((user) => {
-    $('#user_list').append($(`<li>${user}</li>`));
+    $('#user_list').append($(`<li style="color: ${user.color}">${user.username}</li>`));
   });
 });
 
 socket.on('chat message', function(msg) {
-  $('#messages_list')
-  .append($(`<li>
-              <div class="message-time">${msg.time}</div>
-              <div class="username-message">${msg.username}</div>
-              <div class="message-content">${msg.message}</div>
-            </li>`));
+
+  if (msg.username.username === $('#username').text()) {
+    $('#messages_list')
+    .append($(`<li>
+                <div class="message-time">${msg.time}</div>
+                <div class="username-message" style="color: #${msg.username.color} !important;"><b>${msg.username.username}</b></div>
+                <div class="message-content">${msg.message}</div>
+              </li>`));
+  } else {
+    $('#messages_list')
+    .append($(`<li>
+                <div class="message-time">${msg.time}</div>
+                <div class="username-message" style="color: #${msg.username.color} !important;">${msg.username.username}</div>
+                <div class="message-content">${msg.message}</div>
+              </li>`));
+  }
+
   $("#messages_list").scrollTop($("#messages_list")[0].scrollHeight);
 });
 
@@ -67,6 +100,12 @@ function sendMessage() {
     socket.emit('update username', [oldUsername, newUsername]);
 
     $('#message').val('');
+    $('#username').text(newUsername);
+
+  } else if (message.split(' ')[0] === '/nickcolor') {
+    let newColor = message.split(' ')[1];
+
+    socket.emit('update username color', [username, newColor]);
 
   } else {
     let messageToSend = {
@@ -82,6 +121,9 @@ function sendMessage() {
   return false;
 }
 
-function test() {
-  console.log('working');
+function disconnect() {
+  let username = $('#username').text();
+
+  socket.emit('user disconnect', username);
+  window.location = 'www.google.com';
 }

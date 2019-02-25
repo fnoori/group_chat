@@ -19,7 +19,18 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
+
+    users.forEach((user) => {
+      if (user.username === msg.username) {
+        msg.username = {
+          'username': msg.username,
+          'color': user.color
+        };
+      }
+    });
+
     messages.push(msg);
+
     io.emit('chat message', msg);
   });
 
@@ -37,7 +48,12 @@ io.on('connection', function(socket){
   });
 
   socket.on('update user', function(user) {
-    users.push(user);
+    let newUser = {
+      'username': user,
+      'color': '#000000'
+    };
+
+    users.push(newUser);
     io.emit('update user', users);
   });
 
@@ -48,7 +64,8 @@ io.on('connection', function(socket){
 
     users.forEach((user) => {
       if (user === newUsername) {
-        io.emit('update username', false);
+        io.emit('update user', false);
+        return;
       }
     });
 
@@ -67,7 +84,25 @@ io.on('connection', function(socket){
     io.emit('update user', users);
   });
 
-  socket.on('remove user', function(user) {
+  socket.on('update username color', function(userInfo) {
+
+    users.forEach((user) => {
+      if (user.username === userInfo[0]) {
+        user.color = userInfo[1];
+      }
+    });
+
+    messages.forEach((message) => {
+      if (message.username.username === userInfo[0]) {
+        message['username']['color'] = userInfo[1];
+      }
+    });
+
+    io.emit('update chat', messages);
+    io.emit('update user', users);
+  });
+
+  socket.on('user disconnect', function(user) {
     users.splice(user, 1);
     io.emit('update user', users);
   });
