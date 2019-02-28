@@ -86,6 +86,13 @@ function sendMessage() {
   if (message.split(' ')[0] === '/nick') {
     let oldUsername = username;
     let newUsername = message.split(' ')[1];
+    let currentListOfUsers = [];
+
+    $('#user_list li').toArray().forEach((user) => {
+      if (user.textContent === newUsername) {
+        return alert('username is already taken');
+      }
+    });
 
     socket.emit('update username', [oldUsername, newUsername]);
 
