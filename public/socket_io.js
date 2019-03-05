@@ -82,6 +82,7 @@ socket.on('chat message', function(msg) {
 function sendMessage() {
   let message = $('#message').val();
   let username = $('#username').text();
+  let duplicateUsername = false;
 
   if (message.split(' ')[0] === '/nick') {
     let oldUsername = username;
@@ -90,9 +91,13 @@ function sendMessage() {
 
     $('#user_list li').toArray().forEach((user) => {
       if (user.textContent === newUsername) {
-        return alert('username is already taken');
+        duplicateUsername = true;
       }
     });
+
+    if (duplicateUsername) {
+      return alert('Username already exists');
+    }
 
     socket.emit('update username', [oldUsername, newUsername]);
 
