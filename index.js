@@ -32,12 +32,6 @@ io.on('connection', function(socket){
     incomingMsg.message = msg.message;
     incomingMsg.time = new Date().toLocaleTimeString();
 
-    console.log('----------------------');
-    console.log(users);
-    console.log(msg);
-    console.log(incomingMsg);
-    console.log('----------------------');
-
     messages.push(incomingMsg);
 
     io.emit('chat message', incomingMsg);
@@ -116,7 +110,6 @@ io.on('connection', function(socket){
 
   socket.on('user disconnect', function(user) {
     users = users.filter(item => item.username !== user);
-
 
     messages.push({
       'username': ' ',
